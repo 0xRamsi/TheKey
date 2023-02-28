@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewData["Title"] = "TheKeyAcademy";
+    // TheKeyAcademy
+}
+<script>
+
+    window.addEventListener('DOMContentLoaded', () => {
+        console.log(@Html.Raw(ViewBag.BeiträgeJSON));
+        const beiträge = @Html.Raw(ViewBag.BeiträgeJSON);
+        const theListContainer = document.getElementById('TheList');
+        beiträge.forEach(beitrag => {
+            const ul = document.createElement('li');
+            ul.innerText = beitrag.Author;
+            theListContainer.appendChild(ul)
+        })
+    })
+
+</script>
+
+<h1>Blogbeiträge von der Seite https://www.thekey.academy</h1>
+
+<ul id="TheList"></ul>
