@@ -9,8 +9,12 @@ namespace the_key___technology_GmbH.Controllers
 {
     public class TheKeyAcademyController : Controller
     {
-        static string DateTime_ISOFormat = "yyyy-MM-dd HH:mm";
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult React()
         {
             return View();
         }

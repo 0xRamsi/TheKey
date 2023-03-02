@@ -30,7 +30,7 @@ internal class Program
 
         app.MapControllerRoute(
             name: "default",
-            pattern: "{controller=TheKeyAcademy}/{action=Index}");
+            pattern: "{controller=TheKeyAcademy}/{action=React}");
 
         app.Run();
     }
