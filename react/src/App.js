@@ -2,18 +2,15 @@ import React, { useEffect, useState } from 'react'
 import BlogpostList from './components/BlogpostList';
 
 export default function App() {
-    const [posts, setPosts] = useState([{
-        title:'My story',
-        authorName: 'ramzi',
-        date: Date.now(),
-        link: '',
-    }]);
-
+    const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        setLoading(true);
         fetch('/TheKeyAcademy/GetBlogData')
         .then(response => response.json())
         .then(blogEntries => {
+            setLoading(false);
             console.log(blogEntries);
             setPosts(blogEntries);
         })
@@ -22,7 +19,10 @@ export default function App() {
 
 
     return (<>
-    <h4>Hallt, Welt!</h4>
-    <BlogpostList posts={posts} />
+        <h4>Word Count - React</h4>
+        {(loading) ?
+            (<h3>Loading...</h3>)
+            : <BlogpostList posts={posts} />
+        }
     </>)
 }

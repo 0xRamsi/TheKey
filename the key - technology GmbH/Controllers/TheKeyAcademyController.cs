@@ -1,14 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-
 using System.Net.Http.Headers;
-
+using System.Text.RegularExpressions;
 using the_key___technology_GmbH.Models;
 
 namespace the_key___technology_GmbH.Controllers
 {
     public class TheKeyAcademyController : Controller
     {
+        private HttpClient client = new();
+
+        public TheKeyAcademyController()
+        {
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+            client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -28,11 +37,6 @@ namespace the_key___technology_GmbH.Controllers
 
         public async Task<string> GetBlogData()
         {
-            using HttpClient client = new();
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
-            client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
             string postsJson = await client.GetStringAsync("https://www.thekey.academy/wp-json/wp/v2/posts");
             string authorsJson = await client.GetStringAsync("https://www.thekey.academy/wp-json/wp/v2/users");
             IEnumerable<Blogbeitrag> posts = new List<Blogbeitrag>();
@@ -46,7 +50,7 @@ namespace the_key___technology_GmbH.Controllers
                 Console.WriteLine(ex.Message);
             }
 
-            var a = from post in posts
+            var result = from post in posts
                     join author in authors
                     on post.author equals author.id
                     select new
@@ -60,9 +64,30 @@ namespace the_key___technology_GmbH.Controllers
                         type = post.type,
                         categories = post.categories,
                         tags = post.tags,
+                        theMap = GetWordCountForBlogpost(post.content.rendered),
                     };
 
-            return JsonConvert.SerializeObject(a);
+            return JsonConvert.SerializeObject(result);
+        }
+
+        private IDictionary<string, int> GetWordCountForBlogpost(string content)
+        {
+            IDictionary<string, int> wordCount = new Dictionary<string, int>();
+            content = Regex.Replace(content, "<.*?>", string.Empty);        // Not sure this is a good way to strip HTML, but good enough for a coding homework.
+            content = Regex.Replace(content, "[\"',.;:()]", string.Empty);
+
+            string[] allWords = content.Split(new char[] { ' ', '\t', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            foreach (string word in allWords)
+            {
+                if(wordCount.Keys.Contains(word))
+                {
+                    wordCount[word]++;
+                } else {
+                    wordCount.Add(word, 1);
+                }
+            }
+
+            return wordCount;
         }
     }
 }
