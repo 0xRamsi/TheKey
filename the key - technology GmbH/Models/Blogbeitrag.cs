@@ -1,18 +1,131 @@
-﻿namespace the_key___technology_GmbH.Models
+﻿using Newtonsoft.Json;
+
+namespace the_key___technology_GmbH.Models
 {
     public class Blogbeitrag
     {
-        public int Id { get; set; }
-        public string Guid { get; set; }
-        public string Title { get; set; }
-        public string Author { get; set; }
-        public string Link { get; set; }
-        public string Date{ get; set; }
-        public string LastModified { get; set; }
-        public string Status { get; set; }
-        public string Type { get; set; }
-        public string[] Categories { get; set; }
-        public string[] Tags { get; set; }
+        public int id { get; set; }
+        public DateTime date { get; set; }
+        public DateTime date_gmt { get; set; }
+        public Guid guid { get; set; }
+        public DateTime modified { get; set; }
+        public DateTime modified_gmt { get; set; }
+        public string slug { get; set; }
+        public string status { get; set; }
+        public string type { get; set; }
+        public string link { get; set; }
+        public Title title { get; set; }
+        public Content content { get; set; }
+        public Excerpt excerpt { get; set; }
+        public int author { get; set; }
+        public int featured_media { get; set; }
+        public string comment_status { get; set; }
+        public string ping_status { get; set; }
+        public bool sticky { get; set; }
+        public string template { get; set; }
+        public string format { get; set; }
+        public Meta meta { get; set; }
+        public int[] categories { get; set; }
+        public object[] tags { get; set; }
+        public _Links _links { get; set; }
+    }
 
+    public class Guid
+    {
+        public string rendered { get; set; }
+    }
+
+    public class Title
+    {
+        public string rendered { get; set; }
+    }
+
+    public class Content
+    {
+        public string rendered { get; set; }
+        public bool _protected { get; set; }
+    }
+
+    public class Excerpt
+    {
+        public string rendered { get; set; }
+        public bool _protected { get; set; }
+    }
+
+    public class Meta
+    {
+        public string _seopress_robots_primary_cat { get; set; }
+    }
+
+    public class _Links
+    {
+        public Self[] self { get; set; }
+        public Collection[] collection { get; set; }
+        public About[] about { get; set; }
+        public Author[] author { get; set; }
+        public Reply[] replies { get; set; }
+        public VersionHistory[] versionhistory { get; set; }
+        public WpFeaturedmedia[] wpfeaturedmedia { get; set; }
+        public WpAttachment[] wpattachment { get; set; }
+        public WpTerm[] wpterm { get; set; }
+        public Cury[] curies { get; set; }
+    }
+
+    public class Self
+    {
+        public string href { get; set; }
+    }
+
+    public class Collection
+    {
+        public string href { get; set; }
+    }
+
+    public class About
+    {
+        public string href { get; set; }
+    }
+
+    public class Author
+    {
+        public bool embeddable { get; set; }
+        public string href { get; set; }
+    }
+
+    public class Reply
+    {
+        public bool embeddable { get; set; }
+        public string href { get; set; }
+    }
+
+    public class VersionHistory
+    {
+        public int count { get; set; }
+        public string href { get; set; }
+    }
+
+    public class WpFeaturedmedia
+    {
+        public bool embeddable { get; set; }
+        public string href { get; set; }
+    }
+
+    public class WpAttachment
+    {
+        public string href { get; set; }
+    }
+
+    public class WpTerm
+    {
+        public string taxonomy { get; set; }
+        public bool embeddable { get; set; }
+        public string href { get; set; }
+    }
+
+    public class Cury
+    {
+        public string name { get; set; }
+        public string href { get; set; }
+        public bool templated { get; set; }
     }
 }

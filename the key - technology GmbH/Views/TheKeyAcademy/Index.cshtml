@@ -6,14 +6,44 @@
 <script>
 
     window.addEventListener('DOMContentLoaded', () => {
-        console.log(@Html.Raw(ViewBag.BeiträgeJSON));
-        const beiträge = @Html.Raw(ViewBag.BeiträgeJSON);
-        const theListContainer = document.getElementById('TheList');
-        beiträge.forEach(beitrag => {
-            const ul = document.createElement('li');
-            ul.innerText = beitrag.Author;
-            theListContainer.appendChild(ul)
-        })
+
+        const remakeUI = (blogEntries) => {
+            const theListContainer = document.getElementById('TheList');
+            blogEntries.forEach(beitrag => {
+                console.log(beitrag)
+                const li = document.createElement('li');
+                const title = document.createElement('a');
+                const author = document.createElement('span');
+                const publishDate = document.createElement('span');
+            
+                title.innerText = beitrag.title.rendered;
+                title.href = beitrag.link;
+                author.innerText = beitrag.authorName;
+                publishDate.innerText = beitrag.date.replace('T', ' ');
+
+                li.style.display = "grid";
+                li.style.gridTemplateAreas = `"title title title" "author date none"`;
+                title.style.gridArea = "title";
+                title.style.fontWeight = "bold";
+                title.style.fontSize = "large";
+
+                author.style.gridArea = "author";
+                publishDate.style.gridArea = "date";
+
+                li.appendChild(title);
+                li.appendChild(author);
+                li.appendChild(publishDate);
+                theListContainer.appendChild(li);
+            });
+        }
+
+        fetch('/TheKeyAcademy/GetBlogData')
+            .then(response => response.json())
+            .then(blogEntries => {
+                console.log(blogEntries);
+                remakeUI(blogEntries);
+            });
+
     })
 
 </script>

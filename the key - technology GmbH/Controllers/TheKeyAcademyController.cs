@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+
+using System.Net.Http.Headers;
+
 using the_key___technology_GmbH.Models;
 
 namespace the_key___technology_GmbH.Controllers
@@ -7,28 +10,55 @@ namespace the_key___technology_GmbH.Controllers
     public class TheKeyAcademyController : Controller
     {
         static string DateTime_ISOFormat = "yyyy-MM-dd HH:mm";
-        public TheKeyAcademyController()
-        {
-        }
-
         public IActionResult Index()
         {
-            // fetch('https://www.thekey.academy/wp-json/wp/v2/posts').then(console.log)
-
-            var beiträge = new List<Blogbeitrag>();
-            beiträge.Add(new Blogbeitrag()
-            {
-                Id = 1,
-                Author = "Ramzi",
-                Title = "Ramzis Beitrag",
-                Date = new DateTime(2023, 3, 1).ToString(DateTime_ISOFormat),
-                Categories = new string[] { "My Category" },
-                Link = "www.example.com"
-            });
-
-            ViewBag.BeiträgeJSON = JsonConvert.SerializeObject(beiträge);
-
             return View();
+        }
+
+        public string GetRandomNumber()
+        {
+            Random random = new Random();
+            int randomNumber = random.Next(1, 101);
+            return randomNumber.ToString();
+        }
+
+        public async Task<string> GetBlogData()
+        {
+            using HttpClient client = new();
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+            client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
+            string postsJson = await client.GetStringAsync("https://www.thekey.academy/wp-json/wp/v2/posts");
+            string authorsJson = await client.GetStringAsync("https://www.thekey.academy/wp-json/wp/v2/users");
+            IEnumerable<Blogbeitrag> posts = new List<Blogbeitrag>();
+            IEnumerable<Authors> authors = new List<Authors>();
+            try
+            {
+                posts = JsonConvert.DeserializeObject<IEnumerable<Blogbeitrag>>(postsJson);
+                authors = JsonConvert.DeserializeObject<IEnumerable<Authors>>(authorsJson);
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            var a = from post in posts
+                    join author in authors
+                    on post.author equals author.id
+                    select new
+                    {
+                        id = post.id,
+                        title = post.title,
+                        authorId = post.author,
+                        authorName = author.name,
+                        link = post.link,
+                        date = post.date,
+                        type = post.type,
+                        categories = post.categories,
+                        tags = post.tags,
+                    };
+
+            return JsonConvert.SerializeObject(a);
         }
     }
 }
