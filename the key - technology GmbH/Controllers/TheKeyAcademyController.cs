@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
-using System.Text.RegularExpressions;
 using the_key___technology_GmbH.BusinessLogic;
 using the_key___technology_GmbH.Models;
 
@@ -9,22 +8,17 @@ namespace the_key___technology_GmbH.Controllers
 {
     public class TheKeyAcademyController : Controller
     {
-        private HttpClient client = new();
-
-        public TheKeyAcademyController()
-        {
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
-            client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
-        }
-
         public IActionResult Index()
         {
             return View();
         }
 
         public IActionResult React()
+        {
+            return View();
+        }
+
+        public IActionResult ReactWebsocket()
         {
             return View();
         }
@@ -38,8 +32,8 @@ namespace the_key___technology_GmbH.Controllers
 
         public async Task<string> GetBlogData()
         {
-            string postsJson = await client.GetStringAsync("https://www.thekey.academy/wp-json/wp/v2/posts");
-            string authorsJson = await client.GetStringAsync("https://www.thekey.academy/wp-json/wp/v2/users");
+            string postsJson = await ContentReader.GetContent("https://www.thekey.academy/wp-json/wp/v2/posts");
+            string authorsJson = await ContentReader.GetContent("https://www.thekey.academy/wp-json/wp/v2/users");
             IEnumerable<Blogbeitrag> posts = new List<Blogbeitrag>();
             IEnumerable<Authors> authors = new List<Authors>();
             try

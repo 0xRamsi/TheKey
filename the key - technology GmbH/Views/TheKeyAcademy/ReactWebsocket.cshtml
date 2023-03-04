@@ -4,10 +4,10 @@
 @{
 }
 
-<script src="/js/react/wordpress-reader/bundle.js"></script>
+<script src="/js/react/wordpress-reader/bundle-websocket.js"></script>
 <script>
     window.addEventListener('DOMContentLoaded', () => {
-        console.log('React');
+        console.log('ReactWebsocket');
 
         const root = document.getElementById('root');
         window.wp_wc.mountApp(root);
@@ -15,3 +15,4 @@
 </script>
 
 <div id="root"></div>
+<div id="rootHelper"></div>

@@ -25,12 +25,13 @@ internal class Program
         app.UseStaticFiles();
 
         app.UseRouting();
+        app.UseWebSockets();
 
         app.UseAuthorization();
 
         app.MapControllerRoute(
             name: "default",
-            pattern: "{controller=TheKeyAcademy}/{action=React}");
+            pattern: "{controller=TheKeyAcademy}/{action=ReactWebsocket}");
 
         app.Run();
     }
