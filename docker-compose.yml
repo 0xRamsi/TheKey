@@ -1,0 +1,7 @@
+version: "1.0"
+services:
+  webapp:
+    image: thekey_image
+    ports:
+      - "1000:80"
+      - "1001:443"

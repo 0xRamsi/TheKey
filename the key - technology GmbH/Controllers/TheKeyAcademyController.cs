@@ -8,8 +8,16 @@ namespace the_key___technology_GmbH.Controllers
 {
     public class TheKeyAcademyController : Controller
     {
+        private readonly IConfiguration configuration;
+
+        public TheKeyAcademyController(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
+
         public IActionResult Index()
         {
+            ViewBag.path = configuration["basePath"];
             return View();
         }
 
@@ -23,17 +31,10 @@ namespace the_key___technology_GmbH.Controllers
             return View();
         }
 
-        public string GetRandomNumber()
-        {
-            Random random = new Random();
-            int randomNumber = random.Next(1, 101);
-            return randomNumber.ToString();
-        }
-
         public async Task<string> GetBlogData()
         {
-            string postsJson = await ContentReader.GetContent("https://www.thekey.academy/wp-json/wp/v2/posts");
-            string authorsJson = await ContentReader.GetContent("https://www.thekey.academy/wp-json/wp/v2/users");
+            string postsJson = await ContentReader.GetContent(configuration["basePath"] + "/wp-json/wp/v2/posts");
+            string authorsJson = await ContentReader.GetContent(configuration["basePath"] + "/wp-json/wp/v2/users");
             IEnumerable<Blogbeitrag> posts = new List<Blogbeitrag>();
             IEnumerable<Authors> authors = new List<Authors>();
             try

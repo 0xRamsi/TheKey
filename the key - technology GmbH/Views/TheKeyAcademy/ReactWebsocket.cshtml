@@ -10,9 +10,36 @@
         console.log('ReactWebsocket');
 
         const root = document.getElementById('root');
-        window.wp_wc.mountApp(root);
+        const port = window.location.port;
+        window.wp_wc.mountApp(root, port);
     });
 </script>
+<style>
+    .blogpost-container1 {
+        display: grid;
+        grid-template-areas: "title author date" "wordCount wordCount wordCount";
+        gap: 5px;
+    }
+
+    .blogpost-container {
+        display: grid;
+        grid-template-columns: auto 1fr;
+    }
+
+    .blogpost-title {
+        font-weight: bold;
+        font-size: large;
+    }
+
+    .blogpost-author-date {
+        justify-content: end;
+        display: flex;
+    }
+
+    .blogpost-wordCount {
+        grid-column: 1 / span 3;
+    }
+</style>
 
 <div id="root"></div>
 <div id="rootHelper"></div>

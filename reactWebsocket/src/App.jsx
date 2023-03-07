@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { PortContext } from './context/PortContext.js';
 import BlogpostList from './components/BlogpostList';
 
-export default function App() {
+export default function App({ port }) {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         setLoading(true);
-        // const ws = new WebSocket("wss://localhost:49201/ws");
-        // setWs(ws);
         fetch('/TheKeyAcademy/GetBlogData')
         .then(response => response.json())
         .then(blogEntries => {
@@ -18,12 +17,14 @@ export default function App() {
     },
     []);
 
-
     return (<>
         <h4>Word Count - React</h4>
         {(loading) ?
             (<h3>Loading...</h3>)
-            : <BlogpostList posts={posts} />
+            :
+            <PortContext.Provider value={port}>
+                <BlogpostList posts={posts} />
+            </PortContext.Provider>
         }
     </>)
 }

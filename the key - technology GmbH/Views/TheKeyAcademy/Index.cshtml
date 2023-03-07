@@ -1,10 +1,8 @@
 ﻿
 @{
     ViewData["Title"] = "TheKeyAcademy";
-    // TheKeyAcademy
 }
 <script>
-
     window.addEventListener('DOMContentLoaded', () => {
 
         const remakeUI = (blogEntries) => {
@@ -48,6 +46,6 @@
 
 </script>
 
-<h1>Blogbeiträge von der Seite https://www.thekey.academy</h1>
+<h1>Blogbeiträge von der Seite @ViewBag.path</h1>
 
 <ul id="TheList"></ul>
