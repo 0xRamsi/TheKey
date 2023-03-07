@@ -1,0 +1,35 @@
+[
+    {
+        "id":16372,
+        "title":{"rendered":"Blogpost 1"},
+        "authorId":4,
+        "authorName":"Ramzi",
+        "link":"https://www.example.com/blogpost1/",
+        "date":"2023-01-02T14:37:58",
+        "type":"post",
+        "categories":[1,42],
+        "tags":[],
+        "theMap":{}},
+    {
+        "id":1418,
+        "title":{"rendered":"Blogpost 2"},
+        "authorId":2,
+        "authorName":"Karl",
+        "link":"https://www.example.com/blogpost2/",
+        "date":"2022-12-02T09:03:30",
+        "type":"post",
+        "categories":[34],
+        "tags":[],
+        "theMap":{}},
+    {
+        "id":15423,
+        "title":{"rendered":"Blogpost 3"},
+        "authorId":4,
+        "authorName":"Kris Scheuber",
+        "link":"https://www.example.com/blogpost3/",
+        "date":"2022-12-01T16:09:09",
+        "type":"post",
+        "categories":[1],
+        "tags":[],
+        "theMap":{}}
+]
